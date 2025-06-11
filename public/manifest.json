@@ -1,0 +1,86 @@
+{
+  "manifest_version": 3,
+  "name": "AI Accessibility Enhancer",
+  "version": "2.1.1",
+  "description": "WCAG 2.2-AA compliance analyzer powered by AI (Gemini/OpenAI). Intelligent accessibility suggestions and real-time analysis.",
+  "author": "AI Accessibility Team",
+  "homepage_url": "https://github.com/ai-accessibility/enhancer",
+  "permissions": [
+    "scripting",
+    "activeTab",
+    "storage",
+    "tabs",
+    "contextMenus",
+    "declarativeNetRequest"
+  ],
+  "host_permissions": [
+    "https://*/*",
+    "http://*/*",
+    "https://generativelanguage.googleapis.com/*",
+    "https://api.openai.com/*",
+    "http://localhost:*/*",
+    "http://127.0.0.1:*/*"
+  ],
+  "background": {
+    "service_worker": "src/background/background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_title": "AI Accessibility Enhancer - WCAG 2.2-AA Analysis",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*/*", "http://*/*"],
+      "js": ["src/content/content.js"],
+      "run_at": "document_end",
+      "all_frames": false,
+      "match_about_blank": false
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/*", "icons/*", "src/styles/tailwind.css"],
+      "matches": ["https://*/*", "http://*/*"]
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' https://generativelanguage.googleapis.com https://api.openai.com http://localhost:* http://127.0.0.1:*; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:;"
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+A",
+        "mac": "Command+Shift+A"
+      },
+      "description": "Extension popup'ını aç"
+    },
+    "analyze_element": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+E",
+        "mac": "Command+Shift+E"
+      },
+      "description": "Seçili elementi analiz et"
+    },
+    "quick_analysis": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Q",
+        "mac": "Command+Shift+Q"
+      },
+      "description": "Hızlı sayfa analizi"
+    }
+  },
+  "minimum_chrome_version": "110"
+}

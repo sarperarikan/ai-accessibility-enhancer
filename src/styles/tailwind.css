@@ -1,0 +1,23 @@
+/* TailwindCSS temel stilleri */
+/* WCAG 2.2-AA: Kontrast, odak halkası, erişilebilir renkler */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Erişilebilir odak halkası */
+:focus {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* Yüksek kontrast için ek renkler */
+.bg-blue-700 {
+  background-color: #2563eb !important;
+}
+.text-white {
+  color: #fff !important;
+}
+.text-gray-900 {
+  color: #111827 !important;
+}

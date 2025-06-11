@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Context Menu Test - AI Accessibility Enhancer</title>
+    <script src="debug-logger.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .test-area {
+            border: 2px dashed #3b82f6;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            background: #f8fafc;
+        }
+        
+        .instructions {
+            background: #e0f2fe;
+            border: 1px solid #0288d1;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .debug-info {
+            background: #1f2937;
+            color: #f9fafb;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            margin: 20px 0;
+        }
+        
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+        
+        button:hover {
+            background: #2563eb;
+        }
+        
+        .error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .success {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Context Menu Test Sayfası</h1>
+    
+    <div class="instructions">
+        <h3>📋 Test Talimatları:</h3>
+        <ol>
+            <li><strong>Extension'ı yükleyin</strong> (npm run build + Chrome extensions)</li>
+            <li><strong>F12</strong> açın ve <strong>Console</strong> sekmesini izleyin</li>
+            <li><strong>Aşağıdaki herhangi bir elemente sağ tıklayın</strong></li>
+            <li><strong>"Erişilebilirlik Analizi"</strong> seçeneğini tıklayın</li>
+            <li><strong>Modal'ın açılıp açılmadığını kontrol edin</strong></li>
+        </ol>
+    </div>
+
+    <div class="test-area">
+        <h2>🎯 Test Alanı 1: Button</h2>
+        <button id="test-button" onclick="alert('Test button clicked!')">
+            Test Butonu - Sağ Tıklayın!
+        </button>
+        <p>Bu butona sağ tıklayıp context menu'yu test edin.</p>
+    </div>
+
+    <div class="test-area">
+        <h2>🖼️ Test Alanı 2: Image</h2>
+        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='100'><rect width='200' height='100' fill='%2310b981'/><text x='100' y='55' text-anchor='middle' fill='white' font-family='Arial' font-size='16'>Test Image</text></svg>"
+             alt="Test görseli - yeşil arka plan üzerinde beyaz yazı"
+             style="border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <p>Bu görsele sağ tıklayıp context menu'yu test edin.</p>
+    </div>
+
+    <div class="test-area">
+        <h2>📝 Test Alanı 3: Form</h2>
+        <form>
+            <label for="test-input">Test Input:</label>
+            <input type="text" id="test-input" placeholder="Buraya yazın ve sağ tıklayın" style="width: 100%; padding: 8px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px;">
+            
+            <label for="test-textarea">Test Textarea:</label>
+            <textarea id="test-textarea" placeholder="Bu textarea'ya sağ tıklayın" style="width: 100%; height: 80px; padding: 8px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px;"></textarea>
+        </form>
+    </div>
+
+    <div class="test-area">
+        <h2>📋 Test Alanı 4: Liste</h2>
+        <ul id="test-list">
+            <li>Liste öğesi 1 - sağ tıklayın</li>
+            <li>Liste öğesi 2 - sağ tıklayın</li>
+            <li>Liste öğesi 3 - sağ tıklayın</li>
+        </ul>
+    </div>
+
+    <div class="debug-info" id="debug-log">
+Konsol logları buraya gelecek...
+
+Expected Console Messages:
+✅ Background script loaded successfully
+✅ Context menu created: ai-accessibility-analyze
+✅ Content script loaded successfully
+✅ Context menu clicked: ai-accessibility-analyze
+✅ Content script received message: SHOW_WCAG_MODAL
+✅ WCAG Modal açılıyor...
+✅ Modal DOM'a eklendi
+    </div>
+
+    <div class="test-area">
+        <h2>🔍 Manuel Test Butonları</h2>
+        <button onclick="testExtensionStatus()">Extension Status Kontrol</button>
+        <button onclick="testContentScript()">Content Script Test</button>
+        <button onclick="testContextMenu()">Context Menu Test</button>
+        <button onclick="clearDebugLog()">Debug Log Temizle</button>
+        <button onclick="downloadDebugLogs()" style="background: #059669;">Debug Logları İndir</button>
+        <button onclick="forceShowModal()">Zorla Modal Aç</button>
+    </div>
+
+    <div id="test-results"></div>
+
+    <script>
+        // Debug logging
+        const debugLog = document.getElementById('debug-log');
+        const testResults = document.getElementById('test-results');
+
+        function addDebugMessage(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logMessage = `[${timestamp}] ${message}\n`;
+            
+            if (debugLog.textContent.includes('Konsol logları buraya gelecek...')) {
+                debugLog.textContent = logMessage;
+            } else {
+                debugLog.textContent += logMessage;
+            }
+            
+            // Auto scroll
+            debugLog.scrollTop = debugLog.scrollHeight;
+        }
+
+        function showResult(message, success = true) {
+            const resultDiv = document.createElement('div');
+            resultDiv.className = success ? 'success' : 'error';
+            resultDiv.innerHTML = `<strong>${success ? '✅' : '❌'}</strong> ${message}`;
+            testResults.appendChild(resultDiv);
+            
+            // Remove after 5 seconds
+            setTimeout(() => {
+                if (resultDiv.parentNode) {
+                    resultDiv.parentNode.removeChild(resultDiv);
+                }
+            }, 5000);
+        }
+
+        // Extension status test
+        function testExtensionStatus() {
+            if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.id) {
+                addDebugMessage('✅ Chrome extension API available');
+                showResult('Extension API erişilebilir', true);
+            } else {
+                addDebugMessage('❌ Chrome extension API not available');
+                showResult('Extension API erişilemiyor - Extension yüklü mü?', false);
+            }
+        }
+
+        // Content script test
+        function testContentScript() {
+            if (typeof chrome !== 'undefined' && chrome.runtime) {
+                // Test content script connection
+                chrome.runtime.sendMessage({type: 'PING'}, (response) => {
+                    if (chrome.runtime.lastError) {
+                        addDebugMessage('❌ Content script communication failed: ' + chrome.runtime.lastError.message);
+                        showResult('Content script ile iletişim başarısız', false);
+                    } else {
+                        addDebugMessage('✅ Content script responding: ' + JSON.stringify(response));
+                        showResult('Content script çalışıyor', true);
+                    }
+                });
+            } else {
+                showResult('Chrome API erişilemiyor', false);
+            }
+        }
+
+        function clearDebugLog() {
+            debugLog.textContent = 'Debug log temizlendi...\n';
+        }
+
+        // Context menu test fonksiyonu
+        function testContextMenu() {
+            addDebugMessage('🧪 Context menu test başlatılıyor...');
+            
+            if (typeof chrome !== 'undefined' && chrome.runtime) {
+                // Background script'e context menu test mesajı gönder
+                chrome.runtime.sendMessage({
+                    type: 'TEST_CONTEXT_MENU'
+                }, (response) => {
+                    if (chrome.runtime.lastError) {
+                        addDebugMessage('❌ Context menu test başarısız: ' + chrome.runtime.lastError.message);
+                        showResult('Context menu test başarısız', false);
+                    } else {
+                        addDebugMessage('✅ Context menu test yanıtı: ' + JSON.stringify(response));
+                        showResult('Context menu sistemi çalışıyor', true);
+                        
+                        // Manuel modal açma testi
+                        setTimeout(() => {
+                            addDebugMessage('🔧 Manuel modal açma testi...');
+                            chrome.runtime.sendMessage({
+                                type: 'SHOW_WCAG_MODAL',
+                                forceProvider: 'gemini'
+                            }, (modalResponse) => {
+                                if (chrome.runtime.lastError) {
+                                    addDebugMessage('❌ Manuel modal açma başarısız: ' + chrome.runtime.lastError.message);
+                                    showResult('Manuel modal açma başarısız', false);
+                                } else {
+                                    addDebugMessage('✅ Manuel modal açma başarılı: ' + JSON.stringify(modalResponse));
+                                    showResult('Manuel modal açma başarılı', true);
+                                }
+                            });
+                        }, 1000);
+                    }
+                });
+            } else {
+                addDebugMessage('❌ Chrome extension API erişilemiyor');
+                showResult('Chrome extension API erişilemiyor', false);
+            }
+        }
+
+        // Zorla modal açma fonksiyonu
+        function forceShowModal() {
+            addDebugMessage('🚀 ZORLA MODAL AÇMA TEST BAŞLATILIYOR...');
+            
+            if (typeof chrome !== 'undefined' && chrome.runtime) {
+                // İlk olarak content script'in hazır olup olmadığını kontrol et
+                chrome.runtime.sendMessage({type: 'PING'}, (response) => {
+                    if (chrome.runtime.lastError) {
+                        addDebugMessage('❌ Content script yanıt vermiyor: ' + chrome.runtime.lastError.message);
+                        showResult('Content script ile bağlantı başarısız', false);
+                    } else {
+                        addDebugMessage('✅ Content script hazır, direkt modal açılıyor...');
+                        
+                        // Background script üzerinden modal aç
+                        chrome.runtime.sendMessage({
+                            type: 'SHOW_WCAG_MODAL',
+                            forceProvider: 'gemini'
+                        }, (response) => {
+                            if (chrome.runtime.lastError) {
+                                addDebugMessage('❌ Background üzerinden modal açma başarısız: ' + chrome.runtime.lastError.message);
+                                showResult('Modal açma başarısız', false);
+                            } else {
+                                addDebugMessage('✅ Background üzerinden modal açma yanıtı: ' + JSON.stringify(response));
+                                showResult('Modal açma isteği gönderildi', true);
+                            }
+                        });
+                    }
+                });
+            } else {
+                addDebugMessage('❌ Chrome extension API erişilemiyor');
+                showResult('Chrome extension API erişilemiyor', false);
+            }
+        }
+
+        // Console hijacking for debug
+        const originalConsoleLog = console.log;
+        const originalConsoleError = console.error;
+        const originalConsoleWarn = console.warn;
+
+        console.log = function(...args) {
+            addDebugMessage('LOG: ' + args.join(' '));
+            originalConsoleLog.apply(console, args);
+        };
+
+        console.error = function(...args) {
+            addDebugMessage('ERROR: ' + args.join(' '));
+            originalConsoleError.apply(console, args);
+        };
+
+        console.warn = function(...args) {
+            addDebugMessage('WARN: ' + args.join(' '));
+            originalConsoleWarn.apply(console, args);
+        };
+
+        // Page load
+        document.addEventListener('DOMContentLoaded', function() {
+            addDebugMessage('🎯 Test sayfası yüklendi');
+            addDebugMessage('💡 Herhangi bir elemente sağ tıklayıp context menu\'yu test edin');
+            addDebugMessage('🔧 Extension dist klasöründen yüklenmelidir: chrome-axe-gemini/dist/');
+            
+            // Extension availability check
+            setTimeout(testExtensionStatus, 500);
+        });
+// Right-click tracking
+document.addEventListener('contextmenu', function(e) {
+    const target = e.target;
+    const elementInfo = `${target.tagName}${target.id ? '#' + target.id : ''}${target.className ? '.' + target.className.split(' ')[0] : ''}`;
+    addDebugMessage(`🖱️ Sağ tık algılandı: ${elementInfo}`);
+    
+    // Element'i global olarak kaydet (content script için)
+    window.lastRightClickedElement = target;
+    
+    // Context menu açıldıktan sonra kontrol et
+    setTimeout(() => {
+        addDebugMessage('🔍 Context menu açıldı - "Erişilebilirlik Analizi" seçeneğini arayın');
+        
+        // Chrome API'sinin context menu'yu oluşturup oluşturmadığını kontrol et
+        if (typeof chrome !== 'undefined' && chrome.runtime) {
+            addDebugMessage('✅ Chrome API erişilebilir - Context menu öğeleri kontrol ediliyor');
+            
+            // Context menu debug mesajı gönder
+            chrome.runtime.sendMessage({
+                type: 'CONTEXT_MENU_DEBUG',
+                elementInfo: elementInfo,
+                timestamp: Date.now()
+            }, (response) => {
+                if (chrome.runtime.lastError) {
+                    addDebugMessage('⚠️ Context menu debug mesajı gönderim hatası: ' + chrome.runtime.lastError.message);
+                } else {
+                    addDebugMessage('📋 Context menu debug yanıtı: ' + JSON.stringify(response));
+                }
+            });
+        } else {
+            addDebugMessage('❌ Chrome API erişilemiyor - Extension yüklü değil');
+        }
+    }, 100);
+});
+    </script>
+</body>
+</html>

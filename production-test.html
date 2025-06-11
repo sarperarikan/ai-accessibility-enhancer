@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Accessibility Enhancer - Production Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            line-height: 1.6;
+            background: #f8fafc;
+        }
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .test-card {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+        }
+        .problem-element {
+            background: #fef2f2;
+            border: 2px solid #fecaca;
+            padding: 16px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        .success-element {
+            background: #f0f9ff;
+            border: 2px solid #bae6fd;
+            padding: 16px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        .btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 8px 4px;
+            transition: all 0.2s;
+        }
+        .btn:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+        .btn:focus {
+            outline: 2px solid #fbbf24;
+            outline-offset: 2px;
+        }
+        .instructions {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .low-contrast {
+            background: #dc2626;
+            color: #fca5a5;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+        }
+        .interactive-div {
+            cursor: pointer;
+            background: #f3f4f6;
+            padding: 12px;
+            border-radius: 4px;
+            border: 1px dashed #9ca3af;
+        }
+        .interactive-div:hover {
+            background: #e5e7eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>🤖 AI Accessibility Enhancer</h1>
+        <p>Production Test Sayfası - Gerçek Web Sitesi Simülasyonu</p>
+    </div>
+
+    <div class="instructions">
+        <h2>📋 Test Talimatları</h2>
+        <ol>
+            <li><strong>Extension'ı yükleyin</strong> - Chrome'da <code>chrome://extensions/</code> adresine gidin</li>
+            <li><strong>Bu sayfadaki herhangi bir elemento sağ tıklayın</strong></li>
+            <li><strong>"Erişilebilirlik Analizi" seçeneğini tıklayın</strong></li>
+            <li><strong>AI analiz sonuçlarını bekleyin</strong></li>
+        </ol>
+        <p><strong>Not:</strong> Eğer context menu'da seçenek görünmüyorsa, extension'ı yeniden yükleyin ve sayfayı yenileyin.</p>
+    </div>
+
+    <div class="test-card">
+        <h2>✅ Erişilebilir Elementler</h2>
+        <p>Bu elementler WCAG standartlarına uygun:</p>
+        
+        <div class="success-element">
+            <button class="btn" aria-label="Kaydet ve devam et">
+                💾 Kaydet
+            </button>
+            <p><strong>İyi örnek:</strong> Açıklayıcı aria-label ile buton</p>
+        </div>
+
+        <div class="success-element">
+            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzEwYjk4MSIgLz4KICA8dGV4dCB4PSI1MCIgeT0iNTUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkltYWdlPC90ZXh0Pgo8L3N2Zz4K" 
+                 alt="Başarılı işlem görseli - yeşil kare">
+            <p><strong>İyi örnek:</strong> Alt text ile resim</p>
+        </div>
+
+        <div class="success-element">
+            <label for="email-input">E-posta Adresi:</label>
+            <input type="email" id="email-input" placeholder="ornek@email.com" required>
+            <p><strong>İyi örnek:</strong> Label ile bağlanmış input</p>
+        </div>
+    </div>
+
+    <div class="test-card">
+        <h2>🚨 Problemli Elementler</h2>
+        <p>Bu elementlerde erişilebilirlik sorunları var:</p>
+        
+        <div class="problem-element">
+            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2RjMjYyNiIgLz4KICA8dGV4dCB4PSI1MCIgeT0iNTUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkVycm9yPC90ZXh0Pgo8L3N2Zz4K">
+            <p><strong>Problem:</strong> Alt text eksik resim - ekran okuyucular bunu okuyamaz</p>
+        </div>
+
+        <div class="problem-element">
+            <button class="low-contrast">
+                Düşük Kontrast Buton
+            </button>
+            <p><strong>Problem:</strong> WCAG kontrast oranı yetersiz (4.5:1 olmalı)</p>
+        </div>
+
+        <div class="problem-element">
+            <div class="interactive-div" onclick="alert('Tıklandı!')">
+                Tıklanabilir div (klavye erişimi yok)
+            </div>
+            <p><strong>Problem:</strong> Klavye ile erişilemeyen etkileşimli element</p>
+        </div>
+
+        <div class="problem-element">
+            <input type="text" placeholder="İsim giriniz">
+            <p><strong>Problem:</strong> Label eksik input - ne için olduğu belirsiz</p>
+        </div>
+
+        <div class="problem-element">
+            <a href="#" style="color: #9ca3af;">
+                Zayıf kontrast link
+            </a>
+            <p><strong>Problem:</strong> Link rengi yeterince belirgin değil</p>
+        </div>
+    </div>
+
+    <div class="test-card">
+        <h2>🎯 Test Alanı</h2>
+        <p>Aşağıdaki elementlere sağ tıklayarak AI analizini test edin:</p>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 20px 0;">
+            <button class="btn">Normal Buton</button>
+            <div class="interactive-div">Etkileşimli Div</div>
+            <input type="text" placeholder="Test Input">
+            <select>
+                <option>Seçenek 1</option>
+                <option>Seçenek 2</option>
+            </select>
+        </div>
+
+        <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+            <thead>
+                <tr style="background: #f3f4f6;">
+                    <th style="padding: 12px; text-align: left; border: 1px solid #d1d5db;">Özellik</th>
+                    <th style="padding: 12px; text-align: left; border: 1px solid #d1d5db;">Değer</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="padding: 12px; border: 1px solid #d1d5db;">Test Öğesi</td>
+                    <td style="padding: 12px; border: 1px solid #d1d5db;">Tablo Hücresi</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <footer style="text-align: center; margin-top: 40px; padding: 20px; color: #6b7280;">
+        <p>© 2024 AI Accessibility Enhancer - WCAG 2.2-AA Uyumlu</p>
+        <p><small>Extension yüklü değilse context menu'da "Erişilebilirlik Analizi" seçeneği görünmeyecektir.</small></p>
+    </footer>
+
+    <script>
+        // Production sayfası için basit tracking
+        console.log('🎯 Production test sayfası yüklendi:', {
+            url: window.location.href,
+            timestamp: new Date().toISOString(),
+            hasExtension: !!chrome?.runtime
+        });
+
+        // Extension debug fonksiyonu varsa çağır
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                if (typeof window.debugAIExtension === 'function') {
+                    console.log('🔍 Extension debug fonksiyonu mevcut');
+                    window.debugAIExtension();
+                } else {
+                    console.log('ℹ️ Extension debug fonksiyonu bulunamadı');
+                }
+            }, 1000);
+        });
+
+        // Context menu tracking
+        document.addEventListener('contextmenu', (event) => {
+            console.log('📋 Context menu açıldı:', {
+                element: event.target.tagName,
+                id: event.target.id || 'no-id',
+                className: event.target.className || 'no-class'
+            });
+        });
+    </script>
+</body>
+</html>
